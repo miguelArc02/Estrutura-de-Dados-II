@@ -8,16 +8,25 @@ def salva_arquivo(qnt_nomes: int):
             nome = fake.name()
             arquivo.write(nome + "\n")
 
-def hash_inicial(nome: str, tamanho_tabela: int):
+''' def hash_inicial(nome: str, tamanho_tabela: int):
     letra_inicial = nome[0].upper()
     codigo_ascii = ord(letra_inicial)
-    return (codigo_ascii + 13) % tamanho_tabela
+    return (codigo_ascii + 13) % tamanho_tabela '''
+
+def hash_completo(nome: str, tamanho_tabela: int):
+    soma_ascii = int(0)
+
+    for letra in nome:
+        codigo_ascii = ord(letra)
+        soma_ascii += codigo_ascii
+    
+    return (soma_ascii + 13) % tamanho_tabela
 
 def le_arquivo():
     with open("nomes.txt", "r", encoding="utf-8") as arquivo:
         nomes = [linha for linha in arquivo]
     
-    print(nomes[:10]) # Lê só as 10 primeiras linhas
+    # print(nomes[:10]) Lê só as 10 primeiras linhas
     return nomes
 
 # Outra versão da linha 18
@@ -36,8 +45,9 @@ if __name__ == "__main__":
 
     nomes = le_arquivo()
     for nome in nomes:
-        hash_code = hash_inicial(nome, 26)
+        hash_code = hash_completo(nome, 26)
         tabela[hash_code].append(nome)
     
     for categoria in tabela:
-        print(f"Categoria: {categoria} - {(len(categoria) / 100) * "*"}\n")
+        total_categoria = len(tabela[categoria])
+        print(f"Categoria: {categoria} - {total_categoria}\n")
